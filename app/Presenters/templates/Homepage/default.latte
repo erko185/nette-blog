@@ -1,0 +1,65 @@
+{block content}
+    <h1>Články</h1>
+
+    {snippet articles}
+
+        <div class="row">
+        <div class="col-md-12">
+        Zoradit podla:
+        <a n:href="default , page=>$page, order => 'created_at', sort => $sortValue">Vytvorené</a>
+        <a n:href="default , page=>$page, order => 'title', sort => $sortValue">Nadpis</a>
+        <a n:href="default , page=>$page, order => 'like_reaction', sort => $sortValue">Hodnotenie kladne</a>
+        <a n:href="default , page=>$page, order => 'dislike_reaction', sort => $sortValue">Hodnotenie zaporne</a>
+
+        <div style="margin-top: 10px" class="articles">
+            {foreach $articles as $article}
+                <h2>{$article->title}</h2>
+                <p>{$article->content}</p>
+                <p>    Pocet Like:{$article->like_reaction}  {if $user->isLoggedIn()}<a class="ajax" n:href="like! $article->id,1"><i class="fa fa-thumbs-up"></i></a>{/if}
+                        Pocet dislike: {$article->dislike_reaction} {if $user->isLoggedIn()}  <a class="ajax" n:href="like! $article->id, 0"><i class="fa fa-thumbs-down"></i></a> {/if}
+                </p>
+            {/foreach}
+        </div>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {if !$paginator->isFirst()}
+                    <li class="page-item"><a class="page-link" n:href="default, 1">První</a></li>
+
+                    <li class="page-item"><a class="page-link" n:href="default, $paginator->page-1">Předchozí</a></li>
+
+                {/if}
+
+	{for $i = 1; $i <= $paginator->getPageCount();$i++}
+                    <li n:if="$paginator->getPage() == $i" class="page-item active">
+                        <a class="page-link active" n:href="default, $i">{$i}</a>
+                    </li>
+                    <li n:if="$paginator->getPage() != $i" class="page-item">
+                        <a class="page-link active" n:href="default, $i">{$i}</a>
+                    </li>    {/for}
+
+	{if !$paginator->isLast()}
+
+                    <li class="page-item"><a class="page-link" n:href="default, $paginator->getPage() + 1">Další</a>
+                    </li>
+
+                    <li class="page-item"><a class="page-link" n:href="default, $paginator->getPageCount()">Poslední</a>
+                    </li>
+                {/if}
+            </ul>
+        </nav>
+    {/snippet}
+    <script>
+        $(".ajax").click(function () {
+
+            $.nette.ajax({
+                url: $(this).attr('href'),
+            });
+
+
+            return false;
+        })
+    </script>
+    </div>
+    </div>
+{/block}
