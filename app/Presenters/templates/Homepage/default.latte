@@ -14,7 +14,7 @@
         <div style="margin-top: 10px" class="articles">
             {foreach $articles as $article}
                 <h2>{$article->title}</h2>
-                <p>{$article->content}</p>
+                <p>{$article->perex}</p>
                 <p>    Pocet Like:{$article->like_reaction}  {if $user->isLoggedIn()}<a class="ajax" n:href="like! $article->id,1"><i class="fa fa-thumbs-up"></i></a>{/if}
                         Pocet dislike: {$article->dislike_reaction} {if $user->isLoggedIn()}  <a class="ajax" n:href="like! $article->id, 0"><i class="fa fa-thumbs-down"></i></a> {/if}
                 </p>

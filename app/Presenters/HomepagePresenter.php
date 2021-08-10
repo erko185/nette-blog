@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
+use App\Model\PostsManager;
 use Nette;
-use App\Model;
-
 final class HomepagePresenter extends Nette\Application\UI\Presenter
 {
-    private Model\PostsManager $postsManager;
+    private PostsManager $postsManager;
     /**
      * @var string
      * @persistent
@@ -30,7 +29,7 @@ final class HomepagePresenter extends Nette\Application\UI\Presenter
 
     private $like = 'like';
 
-    public function __construct(Model\PostsManager $postsManager)
+    public function __construct(PostsManager $postsManager)
     {
         $this->postsManager = $postsManager;
     }

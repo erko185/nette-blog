@@ -2,13 +2,15 @@
 
 namespace App\Model;
 use Nette;
+use Nette\Database\Context;
+use Nette\Security\Passwords;
 
 class Authenticator implements Nette\Security\IAuthenticator
 {
     private $database;
     private $passwords;
 
-    public function __construct(Nette\Database\Context $database, Nette\Security\Passwords $passwords)
+    public function __construct(Context $database, Passwords $passwords)
     {
         $this->database = $database;
         $this->passwords = $passwords;

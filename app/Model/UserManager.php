@@ -6,6 +6,7 @@ namespace App\Model;
 
 use Nette;
 use Nette\Security\Passwords;
+use Nette\Database\Explorer;
 
 
 /**
@@ -22,12 +23,12 @@ final class UserManager
         COLUMN_EMAIL = 'email';
 
 
-    private Nette\Database\Explorer $database;
+    private Explorer $database;
 
     private Passwords $passwords;
 
 
-    public function __construct(Nette\Database\Explorer $database, Passwords $passwords)
+    public function __construct( Explorer $database, Passwords $passwords)
     {
         $this->database = $database;
         $this->passwords = $passwords;
@@ -39,11 +40,7 @@ final class UserManager
         return $this->database->table(self::TABLE_NAME);
     }
 
-    /**
-     * Adds new user.
-     * @throws DuplicateNameException
-     */
-    public function add(string $email, string $password): void
+    public function add(string $email, string $password)
     {
         Nette\Utils\Validators::assert($email, 'email');
         try {
@@ -52,7 +49,7 @@ final class UserManager
                 self::COLUMN_EMAIL => $email,
             ]);
         } catch (Nette\Database\UniqueConstraintViolationException $e) {
-            throw new DuplicateNameException;
+           return   "DuplicateNameException";
         }
     }
 

@@ -7,6 +7,7 @@ namespace App\Forms;
 use App\Model;
 use Nette;
 use Nette\Application\UI\Form;
+use App\Model\UserManager;
 
 
 final class SignUpFormFactory
@@ -17,10 +18,10 @@ final class SignUpFormFactory
 
 	private FormFactory $factory;
 
-	private Model\UserManager $userManager;
+	private UserManager $userManager;
 
 
-	public function __construct(FormFactory $factory, Model\UserManager $userManager)
+	public function __construct(FormFactory $factory, UserManager $userManager)
 	{
 		$this->factory = $factory;
 		$this->userManager = $userManager;
@@ -43,12 +44,13 @@ final class SignUpFormFactory
 		$form->addSubmit('send', 'Zaregistrovat sa');
 
 		$form->onSuccess[] = function (Form $form, \stdClass $values) use ($onSuccess): void {
-			try {
-				$this->userManager->add($values->email, $values->password);
-			} catch (Model\DuplicateNameException $e) {
-				$form['username']->addError('Username is already taken.');
-				return;
-			}
+
+				$value =$this->userManager->add($values->email, $values->password);
+
+				if ($value=="DuplicateNameException"){
+                    $form->addError('Email sa uz pouziva');
+                    return;
+                }
 			$onSuccess();
 		};
 

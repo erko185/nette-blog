@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Forms;
 
 use App\Model;
+use App\Model\UserManager;
 use Nette;
 use Nette\Application\UI\Form;
 use Nette\Security\Passwords;
-
+use Nette\Security\User;
 
 final class SignChangeFormFactory
 {
@@ -18,13 +19,13 @@ final class SignChangeFormFactory
 
 	private FormFactory $factory;
 
-	private Model\UserManager $userManager;
+	private UserManager $userManager;
 
-	private Nette\Security\User $user;
+	private User $user;
 
     private Passwords $passwords;
 
-	public function __construct(FormFactory $factory, Model\UserManager $userManager, Nette\Security\User $user,Passwords $passwords)
+	public function __construct(FormFactory $factory, UserManager $userManager, User $user,Passwords $passwords)
 	{
 		$this->factory = $factory;
 		$this->userManager = $userManager;
