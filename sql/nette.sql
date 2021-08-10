@@ -1,3 +1,4 @@
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -21,29 +22,30 @@ SET time_zone = "+00:00";
 CREATE TABLE `posts` (
   `id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
+  `slug` varchar(255) DEFAULT NULL,
   `perex` varchar(255) DEFAULT NULL,
   `content` text NOT NULL,
-  `dislike_reaction` int(11) DEFAULT 0,
   `hide` int(11) DEFAULT NULL,
   `like_reaction` int(11) DEFAULT 0,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `dislike_reaction` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Sťahujem dáta pre tabuľku `posts`
 --
 
-INSERT INTO `posts` (`id`, `title`, `perex`, `content`, `dislike_reaction`, `hide`, `like_reaction`, `created_at`) VALUES
-(1, 'Article One', 'article-one', 'Lorem ipusm dolor one', 1, 0, 1, '2021-08-06 16:37:22'),
-(2, 'Article Two', 'article-two', 'Lorem ipsum dolor two', 0, 1, 2, '2021-08-06 16:37:22'),
-(3, 'Article Three', 'article-three', 'Lorem ipsum dolor three', 0, 0, 1, '2021-08-06 16:37:22'),
-(4, 'Article Four', 'article-four', 'Lorem ipsum dolor three', 0, 1, 0, '2021-08-06 16:37:22'),
-(5, 'Article Five', 'article-five', 'Lorem ipsum dolor three', 0, 1, 0, '2021-08-06 16:37:22'),
-(6, 'Article Six', 'article-six', 'Lorem ipsum dolor three', 0, 1, 0, '2021-08-06 16:37:22'),
-(7, 'Article Seven', 'article-seven', 'Lorem ipsum dolor three', 0, 0, 0, '2021-08-06 16:37:22'),
-(8, 'Article Eight', 'article-eight', 'Lorem ipsum dolor three', 0, 0, 0, '2021-08-06 16:37:22'),
-(9, 'Article Nine', 'article-nine', 'Lorem ipsum dolor three', 0, 1, 0, '2021-08-06 16:37:22'),
-(10, 'Article Ten', 'article-ten', 'Lorem ipsum dolor three', 0, 0, 0, '2021-08-06 16:37:22');
+INSERT INTO `posts` (`id`, `title`, `slug`, `perex`, `content`, `hide`, `like_reaction`, `created_at`, `dislike_reaction`) VALUES
+(1, 'Article One', 'article-one', 'Lorem ipusm dolor one', 'Lorem ipusm dolor one', 0, 1, '2021-08-06 16:37:22', 1),
+(2, 'Article Two', 'article-two', 'Lorem ipsum dolor two', 'Lorem ipsum dolor two', 1, 2, '2021-08-06 16:37:22', 0),
+(3, 'Article Three', 'article-three', 'Lorem ipsum dolor three', 'Lorem ipsum dolor three', 0, 1, '2021-08-06 16:37:22', 0),
+(4, 'Article Four', 'article-four', 'Lorem ipsum dolor three', 'Lorem ipsum dolor three', 1, 0, '2021-08-06 16:37:22', 0),
+(5, 'Article Five', 'article-five', 'Lorem ipsum dolor three', 'Lorem ipsum dolor three', 1, 0, '2021-08-06 16:37:22', 0),
+(6, 'Article Six', 'article-six', 'Lorem ipsum dolor three', 'Lorem ipsum dolor three', 1, 0, '2021-08-06 16:37:22', 0),
+(7, 'Article Seven', 'article-seven', 'Lorem ipsum dolor three', 'Lorem ipsum dolor three', 0, 0, '2021-08-06 16:37:22', 0),
+(8, 'Article Eight', 'article-eight', 'Lorem ipsum dolor three', 'Lorem ipsum dolor three', 0, 0, '2021-08-06 16:37:22', 0),
+(9, 'Article Nine', 'article-nine', 'Lorem ipsum dolor three', 'Lorem ipsum dolor three', 1, 0, '2021-08-06 16:37:22', 0),
+(10, 'Article Ten', 'article-ten', 'Lorem ipsum dolor three', 'Lorem ipsum dolor three', 0, 0, '2021-08-06 16:37:22', 0);
 
 -- --------------------------------------------------------
 
@@ -98,7 +100,8 @@ INSERT INTO `users` (`id`, `email`, `password`, `created_at`) VALUES
 -- Indexy pre tabuľku `posts`
 --
 ALTER TABLE `posts`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `posts_slug_uindex` (`slug`);
 
 --
 -- Indexy pre tabuľku `reaction`
