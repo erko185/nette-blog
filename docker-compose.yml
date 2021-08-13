@@ -4,9 +4,6 @@ services:
 
   webserver:
     image: nginx:latest
-    networks:
-      static-network:
-        ipv4_address: 172.20.128.2
     ports:
       - 80:80
     volumes:
@@ -17,14 +14,6 @@ services:
     links:
     - php:php
     working_dir: '/code/src/'
-
-  networks:
-    static-network:
-      ipam:
-        config:
-          - subnet: 172.20.0.0/16
-            #docker-compose v3+ do not use ip_range
-            ip_range: 172.28.5.0/24
 
   php:
     container_name: nette-php
