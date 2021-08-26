@@ -59,10 +59,10 @@ final class PostsManager
     {
 
         $orderSql = "ORDER BY created_at ASC";
-
         if ($order != "" || $order != null) {
-            $orderSql = 'ORDER BY ' . $order . " " . $sort;
+            $orderSql = 'ORDER BY ' . $order . ",created_at " . $sort;
         }
+
 
         if ($type == 1) {
             return $this->database->query('
@@ -105,13 +105,13 @@ final class PostsManager
         $data = $this->getTable()->where(self::COLUMN_ID, $id)->fetch();
         if ($reaction == 1) {
             if ($reactionExistNew == 1) {
-                $this->getTable()->where(self::COLUMN_ID, $id)->update([self::COLUMN_LIKE => intval($data[self::COLUMN_LIKE]) + 1]);
+                $this->getTable()->where(self::COLUMN_ID, $id)->update([self::COLUMN_LIKE."+=" => 1]);
 
             } elseif ($reactionExist->reaction == 0) {
                 if (intval($data[self::COLUMN_DISLIKE]) > 0) {
-                    $this->getTable()->where(self::COLUMN_ID, $id)->update([self::COLUMN_DISLIKE => intval($data[self::COLUMN_DISLIKE]) - 1, self::COLUMN_LIKE => intval($data[self::COLUMN_LIKE]) + 1]);
+                    $this->getTable()->where(self::COLUMN_ID, $id)->update([self::COLUMN_DISLIKE."-=" =>  1, self::COLUMN_LIKE."+=" => 1]);
                 } else {
-                    $this->getTable()->where(self::COLUMN_ID, $id)->update([self::COLUMN_LIKE => intval($data[self::COLUMN_LIKE]) + 1]);
+                    $this->getTable()->where(self::COLUMN_ID, $id)->update([self::COLUMN_LIKE."+=" => 1]);
 
                 }
             }
@@ -119,14 +119,14 @@ final class PostsManager
 
         } else {
             if ($reactionExistNew == 1) {
-                $this->getTable()->where(self::COLUMN_ID, $id)->update([self::COLUMN_DISLIKE => intval($data[self::COLUMN_DISLIKE]) + 1]);
+                $this->getTable()->where(self::COLUMN_ID, $id)->update([self::COLUMN_DISLIKE ."+="=> 1]);
 
             } elseif ($reactionExist->reaction == 1) {
                 if (intval($data[self::COLUMN_LIKE]) > 0) {
-                    $this->getTable()->where(self::COLUMN_ID, $id)->update([self::COLUMN_DISLIKE => intval($data[self::COLUMN_DISLIKE]) + 1, self::COLUMN_LIKE => intval($data[self::COLUMN_LIKE]) - 1]);
+                    $this->getTable()->where(self::COLUMN_ID, $id)->update([self::COLUMN_DISLIKE ."+="=> 1, self::COLUMN_LIKE."-=" => 1]);
                 }
                 else{
-                    $this->getTable()->where(self::COLUMN_ID, $id)->update([self::COLUMN_DISLIKE => intval($data[self::COLUMN_DISLIKE]) + 1]);
+                    $this->getTable()->where(self::COLUMN_ID, $id)->update([self::COLUMN_DISLIKE ."+="=> 1]);
 
                 }
             }

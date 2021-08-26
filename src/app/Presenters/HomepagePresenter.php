@@ -46,8 +46,12 @@ final class HomepagePresenter extends Nette\Application\UI\Presenter
 
         if ($this->sort == 'asc') {
             $sortValue = 'desc';
-        } else {
+        } else if($this->sort == 'desc') {
             $sortValue = 'asc';
+        }
+        else{
+            $this->sort = 'desc';
+            $sortValue = 'desc';
         }
 
 
